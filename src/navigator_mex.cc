@@ -134,11 +134,14 @@ void mexFunction(int nlhs, mxArray *plhs[], int nrhs, const mxArray *prhs[])
       if (!mxIsDouble(prhs[index]) || mxIsComplex(prhs[index]) || mxGetNumberOfElements(prhs[index]) != 1) {
         mexErrMsgTxt("Navigator.setStart: all input arguments expected to be double."); return; }
   
+    bool succeeded = true; 
     double x = *(mxGetPr(prhs[2]));
     double y = *(mxGetPr(prhs[3]));
-    if (!strcmp(function_name, "setStart")) instance->setStart(x, y);
-    if (!strcmp(function_name, "setGoal"))  instance->setGoal(x, y); 
 
+    if (!strcmp(function_name, "setStart")) succeeded = instance->setStart(x, y);
+    if (!strcmp(function_name, "setGoal"))  succeeded = instance->setGoal(x, y); 
+
+    plhs[0] = mxCreateLogicalScalar(static_cast<mxLogical>(succeeded));  
     return;
   }
 

@@ -67,9 +67,9 @@ namespace evl
     virtual bool removeObstacle(int identifier); 
 
     /** \brief Set the starting state in the world frame. */
-    virtual void setStart(double x, double y); 
+    virtual bool setStart(double x, double y); 
     /** \brief Set the goal state in the world frame. */ 
-    virtual void setGoal(double x, double y);
+    virtual bool setGoal(double x, double y);
     /** \brief Run the planner for some allotted time and retrieve the solution. */
     virtual std::vector<std::pair<double, double> > plan(double allotted_time); 
     /** \brief Retrieve the arena with optional most recently planned path overlay. */

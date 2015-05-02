@@ -257,12 +257,26 @@ namespace evl
   }
       
   // set the start and retrieve its corresponding state id. 
-  inline void Navigator::setStart(double x, double y) {
-    start_state_id_ = environment_->SetStart(toArenaX(x), toArenaY(y)); }
+  inline bool Navigator::setStart(double x, double y)
+  {
+    int arena_x = toArenaX(x), arena_y = toArenaY(y); 
+    if (arena_x < 0 || arena_x > width_ - 1) return false;
+    if (arena_y < 0 || arena_y > height_ - 1) return false; 
+
+    start_state_id_ = environment_->SetStart(arena_x, arena_y); 
+    return true;
+  }  
 
   // set the goal and retrieve its corresponding state id.  
-  inline void Navigator::setGoal(double x, double y) {
-    goal_state_id_ = environment_->SetGoal(toArenaX(x), toArenaY(y)); }
+  inline bool Navigator::setGoal(double x, double y)
+  {
+    int arena_x = toArenaX(x), arena_y = toArenaY(y); 
+    if (arena_x < 0 || arena_x > width_ - 1) return false;
+    if (arena_y < 0 || arena_y > height_ - 1) return false; 
+
+    goal_state_id_ = environment_->SetGoal(arena_x, arena_y);
+    return true; 
+  }
 
 
 }
