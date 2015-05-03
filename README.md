@@ -17,7 +17,7 @@ A Dstar planner with simple arena settings.
 3. Launch matlab, then navigate to navigator/matlab/ and run make.m.
 
 ## Usage
-Check out navigator/matlab/example.m. 
+Check out navigator/matlab/example.m and gentraj.m
  
 
 
