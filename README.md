@@ -19,5 +19,10 @@ A Dstar planner with simple arena settings.
 ## Usage
 Check out navigator/matlab/example.m and gentraj.m
  
-
+## Note
+It seems that sometimes the shared library libsbpl.so cannot be found
+when you're trying to instantiate a navigator. In this case, copy 
+sbpl/build/libsbpl.so to matlabroot/bin/glnxa64. matlabroot is the
+root directory of matlab, which can be retrieved by typing 'matlabroot' 
+in the matlab command prompt. 
 
