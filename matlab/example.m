@@ -25,3 +25,7 @@ d = nav.plan(0.1);
  
 imagesc(nav.getArenaImage);  
 waitforbuttonpress;
+
+
+arena = nav.getArena();
+arena(arena < 0) = 0;
