@@ -45,7 +45,7 @@ namespace evl
     // instantiate a simple planar environment with all spaces free. 
     // the four zeros are start and goal coordinates. 1 is the obstacle threshold.  
     environment_ = new EnvironmentNAV2D();
-    environment_->InitializeEnv(width_, height_, NULL, 0, 0, 0, 0, 99);  
+    environment_->InitializeEnv(width_, height_, NULL, 0, 0, 0, 0, 101);  
 
     // this has to be done before invoking plan() or planner throws exceptions.  
     setStart(0, 0); setGoal(0, 0); 
@@ -84,32 +84,32 @@ namespace evl
     return obstacle_count_; 
   }
 
-  int Navigator::updateObstacle(int identifier, double x, double y)
+  bool Navigator::updateObstacle(int identifier, double x, double y)
   {
     // unable to locate the obstacle? reject this request.  
     if (obstacles_.find(identifier) == obstacles_.end()) return false; 
     Obstacle &instance = obstacles_[identifier]; 
 
-    double radius = instance.radius;
-
+    /*double radius = instance.radius;
+    int new_identifier = this->createObstacle(x,y,radius);
     this->removeObstacle(identifier);
-    return createObstacle(x,y,radius);
+    return new_identifier;
+    */
 
 
     // obtain the brand new cells.
-//    std::vector<nav2dcell_t> new_large_cells = prepareCells(x, y, instance.radius);
-//    std::vector<nav2dcell_t> new_cells = prepareCells(x, y, instance.radius*0.75);
-//    std::vector<nav2dcell_t> old_cells = prepareCells(instance.x, instance.y, instance.radius*0.75);
+    std::vector<nav2dcell_t> new_large_cells = prepareCells(x, y, instance.radius);
+    std::vector<nav2dcell_t> new_cells = prepareCells(x, y, instance.radius*0.75);
+    std::vector<nav2dcell_t> old_cells = prepareCells(instance.x, instance.y, instance.radius*0.75);
 
 
     // find the left and right differences and leave the union intact. 
     // this ensures that a minimum amount of cells are changed. 
-//    std::vector<nav2dcell_t> small_left_difference, small_right_difference,  left_difference, right_difference;     
-//    std::vector<nav2dcell_t> left_changed, right_changed;  
+    std::vector<nav2dcell_t> small_left_difference, small_right_difference,  left_difference, right_difference;     
+    std::vector<nav2dcell_t> left_changed, right_changed;  
 
- 
-//    std::set_difference(new_cells.begin(), new_cells.end(),
-/*      old_cells.begin(), old_cells.end(), std::back_inserter(small_left_difference));
+    std::set_difference(new_cells.begin(), new_cells.end(),
+      old_cells.begin(), old_cells.end(), std::back_inserter(small_left_difference));
     std::set_difference(old_cells.begin(),old_cells.end(),
       new_cells.begin(), new_cells.end(), std::back_inserter(small_right_difference));
 
@@ -118,40 +118,19 @@ namespace evl
     std::set_difference(instance.cells.begin(), instance.cells.end(), 
       new_large_cells.begin(), new_large_cells.end(), std::back_inserter(right_difference)); 
 
-
-
-
-    left_changed = updateEnvironment(left_difference, +100);
-    right_changed = updateEnvironment(right_difference, -100);
+    left_changed = updateEnvironment(left_difference, +50);
+    right_changed = updateEnvironment(right_difference, -50);
     left_changed.insert(left_changed.end(), right_changed.begin(), right_changed.end());
     notifyPlanner(left_changed); // notify the planner.
 
-
-    std::set_difference(new_large_cells.begin(), new_large_cells.end(),
-      instance.cells.begin(), instance.cells.end(), std::back_inserter(left_difference));
-    std::set_difference(instance.cells.begin(), instance.cells.end(), 
-      new_large_cells.begin(), new_large_cells.end(), std::back_inserter(right_difference)); 
-
     // update the environment, and obtain the cells that actually have changed.  
-    left_changed = updateEnvironment(left_difference, +50);  
-    right_changed = updateEnvironment(right_difference, -50);
+    left_changed = updateEnvironment(small_left_difference, +50);  
+    right_changed = updateEnvironment(small_right_difference, -50);
     left_changed.insert(left_changed.end(), right_changed.begin(), right_changed.end());
     notifyPlanner(left_changed); // notify the planner. 
     
-
-// std::set_difference(new_cells.begin(), new_cells.end(),
-//      old_cells.begin(), old_cells.end(), std::back_inserter(left_difference));
-//    std::set_difference(old_cells.begin(),old_cells.end(), 
-//      new_cells.begin(), new_cells.end(), std::back_inserter(right_difference)); 
-
-
-//    left_changed = updateEnvironment(left_difference, +50);  
-//    right_changed = updateEnvironment(right_difference, -50);
-//    left_changed.insert(left_changed.end(), right_changed.begin(), right_changed.end());
-//    notifyPlanner(left_changed); // notify the planner. 
-    
-    instance.cells.swap(new_cells); instance.x = x; instance.y = y; 
-    return true;*/ 
+    instance.cells.swap(new_large_cells); instance.x = x; instance.y = y; 
+    return true; 
   }
 
   bool Navigator::removeObstacle(int identifier)

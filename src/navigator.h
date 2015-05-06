@@ -62,7 +62,7 @@ namespace evl
     /** \brief Create a circular obstacle with specified parameters. */
     virtual int createObstacle(double x, double y, double radius);
     /** \brief Update the position of an obstacle. */ 
-    virtual int updateObstacle(int identifier, double x, double y); 
+    virtual bool updateObstacle(int identifier, double x, double y); 
     /** \brief Remove an obstacle. */
     virtual bool removeObstacle(int identifier); 
 

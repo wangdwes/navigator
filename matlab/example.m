@@ -12,14 +12,21 @@ waitforbuttonpress;
 
 nav.setStart(-0.3, 0); % set the starting position.
 nav.setGoal(0.3, 0);   % set the goal position.
-b = nav.plan(0.1);     % please get ths done in 0.1 seconds! b is the waypoints.
+% b = nav.plan(0.1);     % please get ths done in 0.1 seconds! b is the waypoints.
 
-imagesc(nav.getArenaImage);  
+imagesc(nav.getArena);  
 waitforbuttonpress;
+
 
 c = nav.createObstacle(0.3, 0, 0.1); % create a new obstacle. 
 nav.updateObstacle(a, 0, -0.1); % move the obstacle 'a' to (0, 0.1) with radius unchanged.
 
+imagesc(nav.getArena);  
+waitforbuttonpress;
+
+
+nav.updateObstacle(a, 0, 0); % move the obstacle 'a' to (0, 0) with radius unchanged.
+nav.setStart(-0.175, 0);
 nav.setGoal(0.3, -0.2); 
 d = nav.plan(0.1);
  
