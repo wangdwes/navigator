@@ -43,9 +43,19 @@ namespace evl
     height_ = toArenaY(y_upper_limit) + 1; 
    
     // instantiate a simple planar environment with all spaces free. 
-    // the four zeros are start and goal coordinates. 1 is the obstacle threshold.  
+    // the four zeros are start and goal coordinates. 101 is the obstacle threshold.  
     environment_ = new EnvironmentNAV2D();
-    environment_->InitializeEnv(width_, height_, NULL, 0, 0, 0, 0, 101);  
+    unsigned char* map = (unsigned char*)calloc(width_ * height_, sizeof(unsigned char));
+    
+    int index = 0;
+    for( int y = 0; y < height_; y++){
+        for(int x = 0; x < width_; x++){
+         index = x + y * width_;
+         map[index] = 2;    
+        }
+    }
+
+    environment_->InitializeEnv(width_, height_, map, 0, 0, 0, 0, 101);  
 
     // this has to be done before invoking plan() or planner throws exceptions.  
     setStart(0, 0); setGoal(0, 0); 
@@ -78,8 +88,8 @@ namespace evl
     instance.cells.swap(large_cells); // a temporary variable must be created first. 
 
     // then update the environment and notify the planner. Isn't this elegant?
-    notifyPlanner(updateEnvironment(cells, 50)); 
-    notifyPlanner(updateEnvironment(instance.cells, 50));   
+    notifyPlanner(updateEnvironment(cells, 47)); 
+    notifyPlanner(updateEnvironment(instance.cells, 1));   
     obstacles_[++obstacle_count_] = instance;
     return obstacle_count_; 
   }
@@ -118,14 +128,14 @@ namespace evl
     std::set_difference(instance.cells.begin(), instance.cells.end(), 
       new_large_cells.begin(), new_large_cells.end(), std::back_inserter(right_difference)); 
 
-    left_changed = updateEnvironment(left_difference, +50);
-    right_changed = updateEnvironment(right_difference, -50);
+    left_changed = updateEnvironment(left_difference, +1);
+    right_changed = updateEnvironment(right_difference, -1);
     left_changed.insert(left_changed.end(), right_changed.begin(), right_changed.end());
     notifyPlanner(left_changed); // notify the planner.
 
     // update the environment, and obtain the cells that actually have changed.  
-    left_changed = updateEnvironment(small_left_difference, +50);  
-    right_changed = updateEnvironment(small_right_difference, -50);
+    left_changed = updateEnvironment(small_left_difference, +47);  
+    right_changed = updateEnvironment(small_right_difference, -47);
     left_changed.insert(left_changed.end(), right_changed.begin(), right_changed.end());
     notifyPlanner(left_changed); // notify the planner. 
     
@@ -143,8 +153,8 @@ namespace evl
     std::vector<nav2dcell_t> cells = prepareCells(instance.x, instance.y, 0.75*instance.radius);
 
     // update and environment and erase the entry from the registry. 
-    notifyPlanner(updateEnvironment(instance.cells, -50));
-    notifyPlanner(updateEnvironment(cells, -50));
+    notifyPlanner(updateEnvironment(instance.cells, -1));
+    notifyPlanner(updateEnvironment(cells, -47));
     obstacles_.erase(identifier);
     return true;  
   }

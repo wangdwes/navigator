@@ -7,32 +7,42 @@ nav = Navigator(-0.4, 0.4, -0.4, 0.4, 0.005);
 
 % create a circular obstacle at (0, 0) with a radius of 0.2 meter.  
 a = nav.createObstacle(0, 0, 0.2); 
-imagesc(nav.getArenaImage); % visualize the arena. 
-waitforbuttonpress; 
+% imagesc(nav.getArenaImage); % visualize the arena. 
+% waitforbuttonpress; 
+% 
+% nav.setStart(-0.3, 0); % set the starting position.
+% nav.setGoal(0.3, 0);   % set the goal position.
+% % b = nav.plan(0.1);     % please get ths done in 0.1 seconds! b is the waypoints.
+% 
+% imagesc(nav.getArena);  
+% waitforbuttonpress;
+% 
+% 
+% c = nav.createObstacle(0.3, 0, 0.1); % create a new obstacle. 
+% nav.updateObstacle(a, 0, -0.1); % move the obstacle 'a' to (0, 0.1) with radius unchanged.
+% 
+% imagesc(nav.getArena);  
+% waitforbuttonpress;
+% 
+% 
+% nav.updateObstacle(a, 0, 0); % move the obstacle 'a' to (0, 0) with radius unchanged.
+% nav.setStart(-0.1, -0);
+% nav.setGoal(0.3, -0.2); 
+% d = nav.plan(0.1);
+%  
+% imagesc(nav.getArena(true)+100);  
+% 
+% arena = nav.getArena(true);
+% arena(arena < 0) = 100;
+% imagesc(arena);
 
-nav.setStart(-0.3, 0); % set the starting position.
-nav.setGoal(0.3, 0);   % set the goal position.
-% b = nav.plan(0.1);     % please get ths done in 0.1 seconds! b is the waypoints.
+a = nav.createObstacle(0, 0, 0.2); 
 
-imagesc(nav.getArena);  
-waitforbuttonpress;
-
-
-c = nav.createObstacle(0.3, 0, 0.1); % create a new obstacle. 
-nav.updateObstacle(a, 0, -0.1); % move the obstacle 'a' to (0, 0.1) with radius unchanged.
-
-imagesc(nav.getArena);  
-waitforbuttonpress;
+nav.setStart(-0.15, 0); % set the starting position.
+nav.setGoal(0, 0.3);   % set the goal position.
+b = nav.plan(0.01);     % please get ths done in 0.1 seconds! b is the waypoints.
 
 
-nav.updateObstacle(a, 0, 0); % move the obstacle 'a' to (0, 0) with radius unchanged.
-nav.setStart(-0.175, 0);
-nav.setGoal(0.3, -0.2); 
-d = nav.plan(0.1);
- 
-imagesc(nav.getArenaImage);  
-waitforbuttonpress;
-
-
-arena = nav.getArena();
-arena(arena < 0) = 0;
+arena = nav.getArena(true);
+arena(arena < 0) = 100;
+imagesc(arena);
