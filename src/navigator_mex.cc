@@ -111,18 +111,6 @@ void mexFunction(int nlhs, mxArray *plhs[], int nrhs, const mxArray *prhs[])
 
     plhs[0] = mxCreateLogicalScalar(static_cast<mxLogical>(succeeded));  
 
-/*    int64_t re_identifier = instance->updateObstacle(identifier, x, y); 
-    
-    // allocate some storage using their designated allocator. 
-    int64_t *re_dynamicData = static_cast<int64_t*>(mxCalloc(1, sizeof(int64_t)));
-    *re_dynamicData = re_identifier; 
-
-    // stuff the retrieved identifier to matlab compatible format.  
-    plhs[0] = mxCreateNumericMatrix(0, 0, mxINT64_CLASS, mxREAL);  
-    mxSetData(plhs[0], re_dynamicData);
-    mxSetM(plhs[0], 1); 
-    mxSetN(plhs[0], 1); 
-*/
     return; 
   }
 
